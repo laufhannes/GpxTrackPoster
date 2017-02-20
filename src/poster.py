@@ -60,7 +60,7 @@ class Poster:
         d.add(d.text("Avg: {:.1f} km".format(self.statistics['total']/self.statistics['num']), insert=(139, self.height-10), fill=text_color, style=small_value_style))
         d.add(d.text("Min: {:.1f} km".format(self.statistics['min']),                          insert=(167, self.height-15), fill=text_color, style=small_value_style))
         d.add(d.text("Max: {:.1f} km".format(self.statistics['max']),                          insert=(167, self.height-10), fill=text_color, style=small_value_style))
-        d.add(d.image("img/athlete.png", insert=(35, self.height-25.2), size=(77,6.42)))
+        d.add(d.image("img/athlete.svg", insert=(35, self.height-26.7), size=(77,9.2448)))
 
     def __compute_track_statistics(self):
         min_length = -1

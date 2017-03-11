@@ -38,13 +38,13 @@ def main():
                              help='Filter tracks by year (default: past year)')
     args_parser.add_argument('--title', metavar='TITLE', type=str, default="",
                              help='Title to display (default: "").')
-    args_parser.add_argument('--athlete', metavar='NAME', type=str, default="John Doe",
-                             help='Athlete name to display (default: "John Doe").')
+    args_parser.add_argument('--athlete', metavar='NAME', type=str, default="",
+                             help='Athlete name to display (default: "").')
     args_parser.add_argument('--special', metavar='FILE', action='append', default=[],
                              help='Mark track file from the GPX directory as special; use multiple times to mark multiple tracks.')
     args_parser.add_argument('--type', metavar='TYPE', default='grid', choices=generators.keys(),
                              help='Type of poster to create (default: "grid", available: "{}").'.format('", "'.join(generators.keys())))
-    args_parser.add_argument('--stat-label', dest='stat_label', metavar='LABEL', type=str, default="Runs",
+    args_parser.add_argument('--stat-label', dest='stat_label', metavar='LABEL', type=str, default="Activities",
                              help='Statistics: label for number of activities')
     args_parser.add_argument('--stat-num', dest='stat_num', metavar='NUMBER', type=int, default=0,
                              help='Statistics: number of activities')

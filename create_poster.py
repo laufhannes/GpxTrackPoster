@@ -30,18 +30,30 @@ def main():
                              help='Directory containing GPX files (default: current directory).')
     args_parser.add_argument('--output', metavar='FILE', type=str, default='poster.svg',
                              help='Name of generated SVG image file (default: "poster.svg").')
+    args_parser.add_argument('--json-dir', dest='json_dir', metavar='DIR', type=str, default='',
+                                  help='Directory containing JSON files (default: none).')
     args_parser.add_argument('--year', metavar='YEAR', type=str, default='all',
                              help='Filter tracks by year; "NUM", "NUM-NUM", "all" (default: all years)')
-    args_parser.add_argument('--title', metavar='TITLE', type=str, default="My Tracks",
-                             help='Title to display (default: "My Tracks").')
-    args_parser.add_argument('--athlete', metavar='NAME', type=str, default="John Doe",
-                             help='Athlete name to display (default: "John Doe").')
+    args_parser.add_argument('--title', metavar='TITLE', type=str, default="",
+                             help='Title to display (default: "").')
+    args_parser.add_argument('--athlete', metavar='NAME', type=str, default="",
+                             help='Athlete name to display (default: "").')
     args_parser.add_argument('--special', metavar='FILE', action='append', default=[],
                              help='Mark track file from the GPX directory as special; use multiple times to mark '
                                   'multiple tracks.')
     args_parser.add_argument('--type', metavar='TYPE', default='grid', choices=drawers.keys(),
                              help='Type of poster to create (default: "grid", available: "{}").'
                              .format('", "'.join(drawers.keys())))
+    args_parser.add_argument('--stat-label', dest='stat_label', metavar='LABEL', type=str, default="Activities",
+                             help='Statistics: label for number of activities')
+    args_parser.add_argument('--stat-num', dest='stat_num', metavar='NUMBER', type=int, default=0,
+                             help='Statistics: number of activities')
+    args_parser.add_argument('--stat-total', dest='stat_total', metavar='KM', type=float, default=0.0,
+                             help='Statistics: total distance')
+    args_parser.add_argument('--stat-min', dest='stat_min', metavar='KM', type=float, default=0.0,
+                             help='Statistics: minimal distance')
+    args_parser.add_argument('--stat-max', dest='stat_max', metavar='KM', type=float, default=0.0,
+                             help='Statistics: maximal distance')
     args_parser.add_argument('--background-color', dest='background_color', metavar='COLOR', type=str,
                              default='#222222', help='Background color of poster (default: "#222222").')
     args_parser.add_argument('--track-color', dest='track_color', metavar='COLOR', type=str, default='#4DD2FF',
@@ -84,7 +96,11 @@ def main():
         print('Clearing cache...')
         loader.clear_cache()
 
-    tracks = loader.load_tracks(args.gpx_dir)
+    if args.json_dir:
+       	tracks = loader.load_tracks(args.json_dir, True)
+    else:
+      	tracks = loader.load_tracks(args.gpx_dir)
+
     if not tracks:
         if not args.clear_cache:
             print('No tracks found.')
@@ -100,6 +116,11 @@ def main():
                 'special': args.special_color,
                 'special2': args.special_color2 if args.special_color2 is not None else args.special_color,
                 'text': args.text_color}
+    p.statistics = {'label': args.stat_label,
+                    'num': args.stat_num,
+                    'total': args.stat_total,
+                    'min': args.stat_min,
+                    'max': args.stat_max}
     p.units = args.units
     p.set_tracks(tracks)
     p.draw(drawers[args.type], args.output)

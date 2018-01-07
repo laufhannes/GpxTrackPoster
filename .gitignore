@@ -5,3 +5,5 @@ gpx_dir/*
 output/*
 .env
 .idea
+/*.svg
+src/__pycache__/*

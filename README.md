@@ -12,9 +12,11 @@ First of all, you need directory with a bunch of GPX files (e.g. you can export 
 You will need a little experience running things from the command line to use this script. That said, here are the usage details from the `--help` flag:
 
 ```
-usage: create_poster.py [-h] [--gpx-dir DIR] [--output FILE] [--year YEAR]
+usage: create_poster.py [-h] [--gpx-dir DIR] [--json-dir DIR] [--output FILE] [--year YEAR]
                         [--title TITLE] [--athlete NAME] [--special FILE]
                         [--type TYPE] [--background-color COLOR]
+                        [--stat-label LABEL] [--stat-num NUMBER] [--stat-total KM]
+                        [--stat-min KM] [--stat-max KM]
                         [--track-color COLOR] [--track-color2 COLOR]
                         [--text-color COLOR] [--special-color COLOR]
                         [--special-color2 COLOR] [--units UNITS]
@@ -27,6 +29,7 @@ optional arguments:
   -h, --help            show this help message and exit
   --gpx-dir DIR         Directory containing GPX files (default: current
                         directory).
+  --json-dir DIR            Directory containing JSON files (default: none).
   --output FILE         Name of generated SVG image file (default:
                         "poster.svg").
   --year YEAR           Filter tracks by year; "NUM", "NUM-NUM", "all"
@@ -37,6 +40,11 @@ optional arguments:
                         multiple times to mark multiple tracks.
   --type TYPE           Type of poster to create (default: "grid", available:
                         "grid", "calendar", "heatmap", "circular").
+  --stat-label LABEL        Label for number of activities (default: "Runs").
+  --stat-num NUMBER         Number of activities (default: automatically calculated).
+  --stat-total KM           Total distance (default: automatically calculated).
+  --stat-min KM             Minimal distance (default: automatically calculated).
+  --stat-max KM             Maximale distance (default: automatically calculated).           
   --background-color COLOR
                         Background color of poster (default: "#222222").
   --track-color COLOR   Color of tracks (default: "#4DD2FF").

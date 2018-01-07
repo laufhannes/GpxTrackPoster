@@ -23,14 +23,15 @@ def load_gpx_file(file_name: str) -> Track:
     return t
 
 
-def load_cached_track_file(cache_file_name: str, file_name: str) -> Track:
+def load_cached_track_file(cache_file_name: str, file_name: str, load_json) -> Track:
     try:
-        if load_json:
-            cache_file = os.path.join(cache_dir, file_name)
-        else:
+        if not load_json:
             checksum = hashlib.sha256(open(file_name, 'rb').read()).hexdigest()
             cache_file = os.path.join(cache_dir, checksum + ".json")
-        t = track.Track()
+        else:
+            cache_file = os.path.join(file_name)
+        t = Track()
+        print(cache_file)
         t.load_cache(cache_file)
         t.file_names = [os.path.basename(file_name)]
         return t
@@ -55,28 +56,33 @@ class TrackLoader:
                 log.info("Failed: {}".format(e))
 
     def load_tracks(self, base_dir: str, load_json = False) -> List[Track]:
-        file_names = [x for x in self._list_gpx_files(base_dir)]
-        log.info("GPX files: {}".format(len(file_names)))
+        if load_json:
+            self.cache_dir = os.path.abspath(base_dir)
+            file_names = [x for x in self._list_json_files(base_dir)]
+            print("JSON files: {}".format(len(file_names)))
+        else:
+            file_names = [x for x in self._list_gpx_files(base_dir)]
+            print("GPX files: {}".format(len(file_names)))
 
         tracks = []  # type: List[Track]
-
         # load track from cache
         cached_tracks = {}  # type: Dict[str, Track]
         if self.cache_dir:
             log.info("Trying to load {} track(s) from cache...".format(len(file_names)))
-            cached_tracks = self._load_tracks_from_cache(file_names, self.cache_dir, load_json)
+            cached_tracks = self._load_tracks_from_cache(file_names, load_json)
             log.info("Loaded tracks from cache:  {}".format(len(cached_tracks)))
             tracks = list(cached_tracks.values())
 
-        # load remaining gpx files
-        remaining_file_names = [f for f in file_names if f not in cached_tracks]
-        if remaining_file_names:
-            log.info(
-                "Trying to load {} track(s) from GPX files; this may take a while...".format(len(remaining_file_names)))
-            loaded_tracks = self._load_tracks(remaining_file_names)
-            tracks.extend(loaded_tracks.values())
-            log.info("Conventionally loaded tracks: {}".format(len(loaded_tracks)))
-            self._store_tracks_to_cache(loaded_tracks)
+        if not load_json:
+            # load remaining gpx files
+            remaining_file_names = [f for f in file_names if f not in cached_tracks]
+            if remaining_file_names:
+                log.info(
+                    "Trying to load {} track(s) from GPX files; this may take a while...".format(len(remaining_file_names)))
+                loaded_tracks = self._load_tracks(remaining_file_names)
+                tracks.extend(loaded_tracks.values())
+                log.info("Conventionally loaded tracks: {}".format(len(loaded_tracks)))
+                self._store_tracks_to_cache(loaded_tracks)
 
         tracks = self._filter_tracks(tracks)
 
@@ -137,11 +143,12 @@ class TrackLoader:
 
         return tracks
 
-    def _load_tracks_from_cache(self, file_names: List[str], cache_dir, load_json = False) -> Dict[str, Track]:
+    def _load_tracks_from_cache(self, file_names: List[str], load_json = False) -> Dict[str, Track]:
         tracks = {}
+
         with concurrent.futures.ProcessPoolExecutor() as executor:
             future_to_file_name = {
-                executor.submit(load_cached_track_file, self._get_cache_file_name(file_name), file_name, cache_dir, load_json):
+                executor.submit(load_cached_track_file, self._get_cache_file_name(file_name), file_name, load_json):
                     file_name for file_name in file_names
             }
         for future in concurrent.futures.as_completed(future_to_file_name):
@@ -179,7 +186,7 @@ class TrackLoader:
                 yield path_name
 
     @staticmethod
-    def __list_json_files(base_dir):
+    def _list_json_files(base_dir):
         base_dir = os.path.abspath(base_dir)
         if not os.path.isdir(base_dir):
             raise Exception("Not a directory: {}".format(base_dir))

@@ -87,7 +87,11 @@ def main():
         log.addHandler(handler)
 
     loader = track_loader.TrackLoader()
-    loader.cache_dir = os.path.join(appdirs.user_cache_dir(__app_name__, __app_author__), "tracks")
+    if args.json_dir:
+        loader.cache_dir = os.path.join(args.json_dir)
+    else:
+        loader.cache_dir = os.path.join(appdirs.user_cache_dir(__app_name__, __app_author__), "tracks")
+
     if not loader.year_range.parse(args.year):
         raise ParameterError('Bad year range: {}.'.format(args.year))
 

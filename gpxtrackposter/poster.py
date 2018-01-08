@@ -74,7 +74,7 @@ class Poster:
             text_color = self.colors["text"]
             title_style = "font-size:10px; font-family:Arial;"
             d.add(d.text(self.title, insert=(10, 20), fill=text_color, style=title_style))
-        d.add(d.image("img/runalyze.svg", insert=(105, 7.66), size=(95, 15)))
+        d.add(d.image("img/runalyze.svg", insert=(100, 7.66), size=(95, 17)))
 
     def __draw_footer(self, d):
         text_color = self.colors["text"]
@@ -85,18 +85,18 @@ class Poster:
         (total_length, average_length, min_length, max_length, weeks) = self.__compute_track_statistics()
 
         d.add(d.text(self.athlete, insert=(22, self.height-10), fill=text_color, style=value_style))
-        d.add(d.text("STATISTICS", insert=(100, self.height-20), fill=text_color, style=header_style))
+        d.add(d.text("STATISTICS". self.years, insert=(100, self.height-20), fill=text_color, style=header_style))
         d.add(d.text("ACTIVITIES: {}".format(self.statistics['num']), insert=(100, self.height - 15), fill=text_color,
                      style=small_value_style))
         d.add(d.text("Weekly: {:.1f}".format(self.statistics['num'] / weeks), insert=(100, self.height - 10), fill=text_color,
                      style=small_value_style))
-        d.add(d.text("Total: {:.1f} {}".format(self.m2u(self.statistics['total']), self.u()), insert=(130, self.height-15),
+        d.add(d.text("Total: {:.1f} {}".format(self.m2u(self.statistics['total']), self.u()), insert=(135, self.height-15),
                      fill=text_color, style=small_value_style))
-        d.add(d.text("Avg: {:.1f} {}".format(self.m2u(average_length), self.u()), insert=(130, self.height-10),
+        d.add(d.text("Avg: {:.1f} {}".format(self.m2u(average_length), self.u()), insert=(135, self.height-10),
                      fill=text_color, style=small_value_style))
-        d.add(d.text("Min: {:.1f} {}".format(self.m2u(self.statistics['min']), self.u()), insert=(157, self.height-15),
+        d.add(d.text("Min: {:.1f} {}".format(self.m2u(self.statistics['min']), self.u()), insert=(167, self.height-15),
                      fill=text_color, style=small_value_style))
-        d.add(d.text("Max: {:.1f} {}".format(self.m2u(self.statistics['max']), self.u()), insert=(157, self.height-10),
+        d.add(d.text("Max: {:.1f} {}".format(self.m2u(self.statistics['max']), self.u()), insert=(167, self.height-10),
                      fill=text_color, style=small_value_style))
         d.add(d.image("img/athlete.svg", insert=(3, self.height-26.7), size=(77,9.2448)))
 

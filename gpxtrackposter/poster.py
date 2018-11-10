@@ -118,16 +118,16 @@ class Poster:
         self.__compute_track_statistics()
 
         # RUNALYZE: slightly different styling
-        d.add(d.text("YEAR",                                                                   insert=(10, self.height-20),  fill=text_color, style=header_style))
+        d.add(d.text(_("YEAR"),                                                                   insert=(10, self.height-20),  fill=text_color, style=header_style))
         d.add(d.text("{}".format(self.year),                                                   insert=(10, self.height-10),  fill=text_color, style=value_style))
         d.add(d.text(self.athlete,                                                             insert=(40, self.height-10),  fill=text_color, style=value_style))
-        d.add(d.text("STATISTICS",                                                             insert=(120, self.height-20), fill=text_color, style=header_style))
-        d.add(d.text("Total: {:.1f} {}, {}x".format(self.m2u(self.statistics['total']), self.u(), self.statistics['num']), insert=(120, self.height-15), fill=text_color, style=small_value_style))
+        d.add(d.text(_("STATISTICS"),                                                             insert=(120, self.height-20), fill=text_color, style=header_style))
+        d.add(d.text(_("Total") + ": {:.1f} {}, {}x".format(self.m2u(self.statistics['total']), self.u(), self.statistics['num']), insert=(120, self.height-15), fill=text_color, style=small_value_style))
         # RUNALYZE: don't add weekly, as statistics do not match the calculated 'weeks' number
         # d.add(d.text("Weekly: {:.1f}x".format(self.statistics['num']/self.statistics['weeks']),                    insert=(167, self.height-15), fill=text_color, style=small_value_style))
-        d.add(d.text("Avg: {:.1f} {}".format(self.m2u(self.statistics['total']/self.statistics['num']), self.u()), insert=(120, self.height-10), fill=text_color, style=small_value_style))
-        d.add(d.text("Min: {:.1f} {}".format(self.m2u(self.statistics['min']), self.u()),                          insert=(143, self.height-10), fill=text_color, style=small_value_style))
-        d.add(d.text("Max: {:.1f} {}".format(self.m2u(self.statistics['max']), self.u()),                          insert=(167, self.height-10), fill=text_color, style=small_value_style))
+        d.add(d.text(_("Avg") + ": {:.1f} {}".format(self.m2u(self.statistics['total']/self.statistics['num']), self.u()), insert=(120, self.height-10), fill=text_color, style=small_value_style))
+        d.add(d.text(_("Min") + ": {:.1f} {}".format(self.m2u(self.statistics['min']), self.u()),                          insert=(143, self.height-10), fill=text_color, style=small_value_style))
+        d.add(d.text(_("Max") + ": {:.1f} {}".format(self.m2u(self.statistics['max']), self.u()),                          insert=(167, self.height-10), fill=text_color, style=small_value_style))
         d.add(d.image("img/athlete.svg", insert=(35, self.height-26.7), size=(77,9.2448)))
 
     def __compute_track_statistics(self):

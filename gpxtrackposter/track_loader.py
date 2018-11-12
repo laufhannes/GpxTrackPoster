@@ -104,6 +104,8 @@ class TrackLoader:
         # merge tracks that took place within one hour
         # RUNALYZE: we don't want to merge tracks as that may break the 'special' param
         # tracks = self._merge_tracks(tracks)
+        tracks = sorted(tracks, key=lambda t1: t1.start_time)
+
         # filter out tracks with length < min_length
         return [t for t in tracks if t.length >= self.min_length]
 

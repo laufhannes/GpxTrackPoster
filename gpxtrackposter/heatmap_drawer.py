@@ -117,6 +117,7 @@ class HeatmapDrawer(TracksDrawer):
         strokeStyles = [(min(0.1, self._stroke_width / 3.0), self._stroke_width * 5.0 / 0.3),
                         (min(0.2, self._stroke_width * 2.0 / 3.0), self._stroke_width * 2.0 / 0.3),
                         (1.0, self._stroke_width)]
+        self.poster.tracks = sorted(self.poster.tracks, key=lambda t1: (t1.special, t1.start_time))
         for tr in self.poster.tracks:
             color = self.color(self.poster.length_range, tr.length, tr.special)
             for line in utils.project(bbox, size, offset, tr.polylines):
